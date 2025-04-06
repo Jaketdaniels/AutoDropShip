@@ -7,7 +7,17 @@
     <h1>Product Catalog</h1>
     <ul>
     {% for item in items %}
-        <li>{{ item.title }} - ${{ item.price }} (Margin: {{ item.predicted_profit_margin }}%)</li>
+        <li>
+            {{ item.title }} - ${{ item.price }} (Margin: {{ item.predicted_profit_margin }}%)
+            {% if not item.published_ebay and ebay_logged_in %}
+                <a href="/publish/ebay/{{ loop.index0 }}">Publish to eBay</a>
+            {% endif %}
+            {% if not item.published_etsy and etsy_logged_in %}
+                <a href="/publish/etsy/{{ loop.index0 }}">Publish to Etsy</a>
+            {% endif %}
+            {% if item.published_ebay %} (eBay: {{ item.ebay_listing_id }}) {% endif %}
+            {% if item.published_etsy %} (Etsy: {{ item.etsy_listing_id }}) {% endif %}
+        </li>
     {% endfor %}
     </ul>
     <p><a href="/export_catalog">Export as CSV</a></p>
