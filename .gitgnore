@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.env
+catalog.json
+catalog_export.csv
+static/uploads/*
