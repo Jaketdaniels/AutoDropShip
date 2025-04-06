@@ -1,5 +1,7 @@
 fastapi
 uvicorn
+httpx
+python-dotenv
 jinja2
 pydantic
 itsdangerous
