@@ -1,1 +1,30 @@
-
+services:
+  - type: web
+    name: autodropship
+    env: python
+    region: singapore
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: SESSION_SECRET
+        value: "your-random-secret-here"
+      - key: ETSY_CLIENT_ID
+        value: ""
+      - key: ETSY_CLIENT_SECRET
+        value: ""
+      - key: ETSY_REDIRECT_URI
+        value: "https://autodropship.onrender.com/callback/etsy"
+      - key: EBAY_CLIENT_ID
+        value: ""
+      - key: EBAY_CLIENT_SECRET
+        value: ""
+      - key: EBAY_REDIRECT_URI
+        value: "https://autodropship.onrender.com/callback/ebay"
+      - key: EBAY_RU_NAME
+        value: ""
+    autoDeploy: true
