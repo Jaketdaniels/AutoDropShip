@@ -2,6 +2,10 @@
 <html>
 <head>
     <title>AutoDropShip</title>
+    <style>
+        button { margin: 5px; padding: 10px; }
+        .login-widget { margin-top: 20px; }
+    </style>
 </head>
 <body>
     <h1>Add Product</h1>
@@ -14,9 +18,19 @@
         <button type="submit">Add Product</button>
     </form>
     <p><a href="/catalog_ui">View Catalog</a></p>
-    <h2>Marketplace Login</h2>
-    <p>Marketplace logins will be enabled after API setup is complete.</p>
-    <button disabled>Login to eBay</button>
-    <button disabled>Login to Etsy</button>
+    <div class="login-widget">
+        <h2>Marketplace Login</h2>
+        <p>Connect your accounts to publish products:</p>
+        {% if not ebay_logged_in %}
+            <a href="/auth/ebay"><button>Login to eBay</button></a>
+        {% else %}
+            <p>eBay Connected</p>
+        {% endif %}
+        {% if not etsy_logged_in %}
+            <a href="/auth/etsy"><button>Login to Etsy</button></a>
+        {% else %}
+            <p>Etsy Connected</p>
+        {% endif %}
+    </div>
 </body>
 </html>
