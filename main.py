@@ -16,6 +16,12 @@ import httpx
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
+os.makedirs("static", exist_ok=True)
+os.makedirs("static/uploads", exist_ok=True)
+os.makedirs("templates", exist_ok=True)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 load_dotenv()
 
 # API Configuration
