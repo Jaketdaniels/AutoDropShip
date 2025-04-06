@@ -11,7 +11,7 @@ from fastapi import FastAPI, Request, Form, UploadFile, File, HTTPException, Dep
 from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.middleware.sessions import SessionMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 import httpx
 from pydantic import BaseModel
 from dotenv import load_dotenv
