@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: dropshipping-platform
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ETSY_CLIENT_ID
+        sync: false
+      - key: ETSY_CLIENT_SECRET
+        sync: false
+      - key: ETSY_REDIRECT_URI
+        sync: false
+      - key: EBAY_CLIENT_ID
+        sync: false
+      - key: EBAY_CLIENT_SECRET
+        sync: false
+      - key: EBAY_REDIRECT_URI
+        sync: false
+      - key: EBAY_RU_NAME
+        sync: false
+    disk:
+      name: uploads
+      mountPath: /app/static/uploads
+      sizeGB: 1

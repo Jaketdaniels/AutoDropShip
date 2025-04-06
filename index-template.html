@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropshipping Product Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0">Dropshipping Product Generator</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="auth-status">
+                                    <span class="badge {% if ebay_logged_in %}bg-success{% else %}bg-secondary{% endif %} me-2">
+                                        {% if ebay_logged_in %}
+                                            <i class="bi bi-check-circle"></i> eBay Connected
+                                        {% else %}
+                                            <a href="/auth/ebay" class="text-white text-decoration-none">
+                                                <i class="bi bi-lock"></i> Connect eBay
+                                            </a>
+                                        {% endif %}
+                                    </span>
+                                    <span class="badge {% if etsy_logged_in %}bg-success{% else %}bg-secondary{% endif %}">
+                                        {% if etsy_logged_in %}
+                                            <i class="bi bi-check-circle"></i> Etsy Connected
+                                        {% else %}
+                                            <a href="/auth/etsy" class="text-white text-decoration-none">
+                                                <i class="bi bi-lock"></i> Connect Etsy
+                                            </a>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col text-end">
+                                <a href="/catalog_ui" class="btn btn-outline-primary">
+                                    <i class="bi bi-box"></i> View Catalog
+                                </a>
+                            </div>
+                        </div>
+
+                        <form action="/add_product" method="POST" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Product Title</label>
+                                <input type="text" class="form-control" id="title" name="title" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Product Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="cost" class="form-label">Your Cost</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" id="cost" name="cost" step="0.01" min="0" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="price" class="form-label">Selling Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Product Image</label>
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                            </div>
+
+                            <div class="profit-calculator mb-4 p-3 border rounded bg-light">
+                                <h5>Profit Calculator</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p>Profit: <span id="profit-amount">$0.00</span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>Profit Margin: <span id="profit-margin">0%</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="bi bi-plus-circle"></i> Add to Catalog
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Calculate profit and margin on input change
+        document.addEventListener('DOMContentLoaded', function() {
+            const costInput = document.getElementById('cost');
+            const priceInput = document.getElementById('price');
+            const profitAmount = document.getElementById('profit-amount');
+            const profitMargin = document.getElementById('profit-margin');
+
+            function calculateProfit() {
+                const cost = parseFloat(costInput.value) || 0;
+                const price = parseFloat(priceInput.value) || 0;
+                
+                if (price > 0) {
+                    const profit = price - cost;
+                    const margin = (profit / price) * 100;
+                    
+                    profitAmount.textContent = '$' + profit.toFixed(2);
+                    profitMargin.textContent = margin.toFixed(2) + '%';
+                    
+                    // Change color based on margin
+                    if (margin >= 30) {
+                        profitMargin.className = 'text-success fw-bold';
+                    } else if (margin >= 15) {
+                        profitMargin.className = 'text-warning fw-bold';
+                    } else {
+                        profitMargin.className = 'text-danger fw-bold';
+                    }
+                } else {
+                    profitAmount.textContent = '$0.00';
+                    profitMargin.textContent = '0%';
+                    profitMargin.className = '';
+                }
+            }
+
+            costInput.addEventListener('input', calculateProfit);
+            priceInput.addEventListener('input', calculateProfit);
+        });
+    </script>
+</body>
+</html>
